@@ -8,5 +8,10 @@ end
 
 -- add yours here!
 
--- local o = vim.o
--- o.cursorlineopt ='both' -- to enable cursorline!
+local o = vim.o
+o.cursorlineopt = "both" -- to enable cursorline!
+
+-- tabs
+vim.opt.tabstop = 4
+vim.opt.shiftwidth = 4
+vim.opt.expandtab = true

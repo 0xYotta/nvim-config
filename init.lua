@@ -12,7 +12,6 @@ end
 vim.opt.rtp:prepend(lazypath)
 
 local lazy_config = require "configs.lazy"
-
 -- load plugins
 require("lazy").setup({
   {
@@ -37,3 +36,8 @@ require "nvchad.autocmds"
 vim.schedule(function()
   require "mappings"
 end)
+
+-- tabs
+vim.opt.tabstop = 4
+vim.opt.shiftwidth = 4
+vim.opt.expandtab = true
