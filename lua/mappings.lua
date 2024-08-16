@@ -82,3 +82,6 @@ end, { desc = "Toogle Terminal Float" })
 -- Toggle comment
 map("n", "<leader>/", ':lua require("Comment.api").toggle.linewise.current()<CR>', default_opts)
 map("v", "<leader>/", ":lua require('Comment.api').toggle.linewise(vim.fn.visualmode())<CR>", default_opts)
+
+map("n", "<Tab>", ":bnext<CR>", { noremap = true, silent = true })
+map("n", "<leader>gorn", ":GoRename<CR>")

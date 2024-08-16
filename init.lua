@@ -36,3 +36,26 @@ require "nvchad.autocmds"
 vim.schedule(function()
   require "mappings"
 end)
+
+-- Function to format JSON using jq
+local function format_json()
+  local current_buffer = vim.api.nvim_get_current_buf()
+  local buffer_content = vim.api.nvim_buf_get_lines(current_buffer, 0, -1, false)
+  local json_content = table.concat(buffer_content, "\n")
+
+  -- Use jq to format the JSON
+  local handle = io.popen("echo '" .. json_content:gsub("'", [["]]) .. "' | jq .")
+  local formatted_content = handle:read "*a"
+  handle:close()
+
+  -- Replace the buffer content with formatted JSON
+  vim.api.nvim_buf_set_lines(current_buffer, 0, -1, false, vim.split(formatted_content, "\n"))
+end
+
+-- Create a custom command for formatting JSON
+vim.api.nvim_create_user_command("FormatJSON", function()
+  format_json()
+end, {})
+
+-- Mapping the function to <leader>json
+vim.api.nvim_set_keymap("n", "<leader>json", ":FormatJSON<CR>", { noremap = true, silent = true })
