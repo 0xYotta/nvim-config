@@ -59,3 +59,23 @@ end, {})
 
 -- Mapping the function to <leader>json
 vim.api.nvim_set_keymap("n", "<leader>json", ":FormatJSON<CR>", { noremap = true, silent = true })
+
+vim.api.nvim_create_autocmd("BufWritePre", {
+  pattern = "*.json",
+  callback = format_json,
+})
+
+vim.api.nvim_create_autocmd("BufReadPost", {
+  pattern = "*.json",
+  callback = format_json,
+})
+
+vim.opt.scrolloff = 25
+
+vim.api.nvim_create_autocmd("TextYankPost", {
+  desc = "Highlight when yanking (copying) text",
+  group = vim.api.nvim_create_augroup("kickstart-highlight-yank", { clear = true }),
+  callback = function()
+    vim.highlight.on_yank()
+  end,
+})
