@@ -79,3 +79,10 @@ vim.api.nvim_create_autocmd("TextYankPost", {
     vim.highlight.on_yank()
   end,
 })
+
+require("nvim-tree").setup {
+  filters = {
+    dotfiles = false, -- Set this to false to show dotfiles
+  },
+  -- Other configurations can go here
+}

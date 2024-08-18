@@ -87,7 +87,8 @@ map("n", "<Tab>", ":bnext<CR>", { noremap = true, silent = true })
 map("n", "<leader>gorn", ":GoRename<CR>")
 
 --=======================================================================================
---Session control
+--Session control--
+-------------------
 --leader s w to write a session file
 --leader s s to restore a session from that file
 
@@ -105,6 +106,37 @@ _G.save_session = function()
   -- Save the session with the constructed filename
   vim.cmd("mksession! " .. session_filename)
   print("Session saved as " .. session_filename)
+
+  -- Define the path to the .gitignore file
+  local gitignore_path = root_dir .. "/.gitignore"
+
+  -- Check if the .gitignore file exists
+  local gitignore_exists = vim.fn.filereadable(gitignore_path) == 1
+
+  -- Open the .gitignore file in append mode or create it if it doesn't exist
+  local gitignore_file = io.open(gitignore_path, "a+")
+
+  if gitignore_file then
+    -- Read the contents of the .gitignore file to check if the session file is already listed
+    local already_ignored = false
+    for line in gitignore_file:lines() do
+      if line == session_filename then
+        already_ignored = true
+        break
+      end
+    end
+
+    -- If the session file is not already listed, append it to the .gitignore file
+    if not already_ignored then
+      gitignore_file:write(session_filename .. "\n")
+      print(session_filename .. " added to .gitignore")
+    end
+
+    -- Close the .gitignore file
+    gitignore_file:close()
+  else
+    print "Could not open or create .gitignore file"
+  end
 end
 
 -- Define the restore_session function as a global function
