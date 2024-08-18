@@ -85,3 +85,50 @@ map("v", "<leader>/", ":lua require('Comment.api').toggle.linewise(vim.fn.visual
 
 map("n", "<Tab>", ":bnext<CR>", { noremap = true, silent = true })
 map("n", "<leader>gorn", ":GoRename<CR>")
+
+--=======================================================================================
+--Session control
+--leader s w to write a session file
+--leader s s to restore a session from that file
+
+-- Define the save_session function as a global function
+_G.save_session = function()
+  -- Get the current root directory
+  local root_dir = vim.fn.getcwd()
+
+  -- Extract the current folder name from the root directory path
+  local folder_name = vim.fn.fnamemodify(root_dir, ":t")
+
+  -- Construct the session filename using the folder name
+  local session_filename = folder_name .. ".vim"
+
+  -- Save the session with the constructed filename
+  vim.cmd("mksession! " .. session_filename)
+  print("Session saved as " .. session_filename)
+end
+
+-- Define the restore_session function as a global function
+_G.restore_session = function()
+  -- Get the current root directory
+  local root_dir = vim.fn.getcwd()
+
+  -- Extract the current folder name from the root directory path
+  local folder_name = vim.fn.fnamemodify(root_dir, ":t")
+
+  -- Construct the session filename using the folder name
+  local session_filename = folder_name .. ".vim"
+
+  -- Check if the session file exists
+  if vim.fn.filereadable(session_filename) == 1 then
+    -- Source the session file to restore the session
+    vim.cmd("source " .. session_filename)
+    print("Session restored from " .. session_filename)
+  else
+    print("No session file found for " .. folder_name)
+  end
+end
+
+-- Map <leader>sw to save the session
+map("n", "<leader>sw", ":lua save_session()<CR>", { noremap = true, silent = true })
+-- Map <leader>ss to restore the session
+map("n", "<leader>ss", ":lua restore_session()<CR>", { noremap = true, silent = true })
